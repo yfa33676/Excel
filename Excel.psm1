@@ -203,6 +203,27 @@ function Set-Excel{
     }
 }
 
+function ConvertFrom-Excel {
+    [OutputType([PSCustomObject])]
+    param(
+        [Parameter(ValueFromPipeLine)]
+        [Microsoft.Office.Interop.Excel.ApplicationClass]$excel = $excel
+    )
+    process{
+        [PSCustomObject]@{
+            Visible = $excel.Visible
+            DisplayAlerts = $excel.DisplayAlerts
+            EnableEvents = $excel.EnableEvents
+            ScreenUpdating = $excel.ScreenUpdating
+            WorkbooksCount = $excel.Workbooks.Count
+            ActiveWorkbookName = $excel.ActiveWorkbook.Name
+            ActiveSheetName = $excel.ActiveSheet.Name
+            ActiveCellAddress = $excel.ActiveCell.Address(0,0)
+            ActiveCellValue = $excel.ActiveCell.Value2
+        }
+    }
+}
+
 function ConvertFrom-ExcelBook {
     [OutputType([PSCustomObject])]
     param(
@@ -246,15 +267,27 @@ function ConvertFrom-ExcelRange {
     [OutputType([PSCustomObject])]
     param(
         [Parameter(ValueFromPipeLine)]
-        [System.__ComObject]$Range
+        [System.__ComObject]$Range,
+        [switch]$Text
     )
     process{
-        if($Range.Value2){
-            [PSCustomObject]@{
-                BookName = $Range.Parent.Parent.Name
-                SheetName = $Range.Parent.Name
-                Address = $Range.Address($false, $false)
-                Value = $Range.Value2
+        if($Text){
+            if($Range.Text){
+                [PSCustomObject]@{
+                    BookName = $Range.Parent.Parent.Name
+                    SheetName = $Range.Parent.Name
+                    Address = $Range.Address($false, $false)
+                    Text = $Range.Text
+                }
+            }
+        } else {
+            if($Range.Value2){
+                [PSCustomObject]@{
+                    BookName = $Range.Parent.Parent.Name
+                    SheetName = $Range.Parent.Name
+                    Address = $Range.Address($false, $false)
+                    Value = $Range.Value2
+                }
             }
         }
     }
