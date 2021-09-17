@@ -160,6 +160,22 @@ function Set-ExcelRangeValue {
     }
 }
 
+function Add-ExcelRangeValue {
+    param(
+        [Parameter(ValueFromPipeLine)]
+        [System.__ComObject]$Range,
+        [Parameter(Position = 0)]
+        [string]$Value,
+        [string]$Delimiter
+    )
+    process{
+        if($Range.Value2){
+            $Value = $Range.Value2 + $Delimiter + $Value
+        }
+        $Range.Value2 = $Value
+    }
+}
+
 function Get-ExcelRange {
     [OutputType([Microsoft.Office.Interop.Excel.Range])]
     param(
