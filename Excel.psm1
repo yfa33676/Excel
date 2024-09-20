@@ -1,6 +1,6 @@
-# ƒGƒNƒZƒ‹‚ğ‹N“®
+# ï¿½Gï¿½Nï¿½Zï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½
 $excel = New-Object -ComObject Excel.Application
-# ƒGƒNƒZƒ‹İ’è
+# ï¿½Gï¿½Nï¿½Zï¿½ï¿½ï¿½İ’ï¿½
 $excel.Visible = $false
 $excel.DisplayAlerts = $false
 $excel.EnableEvents = $false
@@ -303,6 +303,9 @@ function ConvertFrom-ExcelRange {
                     SheetName = $Range.Parent.Name
                     Address = $Range.Address($false, $false)
                     Value = $Range.Value2
+
+
+                    
                 }
             }
         }
